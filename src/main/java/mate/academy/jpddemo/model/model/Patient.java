@@ -3,15 +3,19 @@ package mate.academy.jpddemo.model.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "patient1")
+@Table(name = "patient")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Patient {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "patient_id")
     int id;
     @Column(name = "name")
