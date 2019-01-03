@@ -7,7 +7,8 @@ import org.hibernate.Session;
 public class HibernateMain {
     public static void main(String[] args) {
         Integer id = createDevice();
-        Device device = getDevice(id);
+        Device device = getDeviceSecondLevel(id);
+        System.out.println(device.getBrand());
     }
 
     public static Integer createDevice() {
@@ -32,7 +33,21 @@ public class HibernateMain {
         System.out.println(device.getModel());
         session.close();
         return deviceOneMore;
-
-
     }
+
+    public static Device getDeviceSecondLevel(Integer id) {
+        System.out.println("Second level cache example");
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Device device = session.load(Device.class, id);
+        System.out.println(device.getModel());
+        session.close();
+
+        Session session2 = HibernateUtil.getSessionFactory().openSession();
+        Device deviceOneMore = session2.load(Device.class, id);
+        System.out.println(deviceOneMore.getModel());
+        session2.close();
+        return deviceOneMore;
+    }
+
+
 }
