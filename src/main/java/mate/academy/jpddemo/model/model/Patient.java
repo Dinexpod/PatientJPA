@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "patient")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

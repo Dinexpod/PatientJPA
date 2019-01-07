@@ -1,5 +1,10 @@
 package mate.academy.jpddemo.model.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,13 +18,13 @@ public class SuperPatient extends Patient {
     @Column(name = "drugs")
     private String drugs;
 
+    public SuperPatient() {
+    }
+
     public SuperPatient(String name, String lastName, Date date, String power, String drugs) {
         super(name, lastName, date);
         this.power = power;
         this.drugs = drugs;
-    }
-
-    public SuperPatient() {
     }
 
     public String getPower() {
