@@ -1,9 +1,5 @@
 package mate.academy.jpddemo.model.acsessory;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import mate.academy.jpddemo.model.devices.Photometr;
 
 import javax.persistence.CascadeType;
@@ -14,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,29 +23,29 @@ public class PhotometerAcsessory extends Acsessory {
     @Column
     private Double cost;
     @Column
-    private AcsessorySize size;
+    private PAcsessorySize size;
     @Column
-    private AcsessoryState State;
+    private PAcsessoryState state;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "photometer_id")
     private Photometr ownerPhotometer;
 
-    public enum AcsessoryState {
+    public enum PAcsessoryState {
         APPLIED,
         UNAPPLIED
     }
 
-    public enum AcsessorySize {
+    public enum PAcsessorySize {
         LITTLE,
         MIDDLE,
         BIG
     }
 
-    public PhotometerAcsessory(String name, String model, String brand, Double cost, AcsessorySize size, AcsessoryState state) {
+    public PhotometerAcsessory(String name, String model, String brand, Double cost, PAcsessorySize size, PAcsessoryState state) {
         super(name, model, brand);
         this.cost = cost;
         this.size = size;
-        State = state;
+        this.state = state;
     }
 
     public PhotometerAcsessory() {
@@ -74,20 +69,34 @@ public class PhotometerAcsessory extends Acsessory {
         this.cost = cost;
     }
 
-    public AcsessorySize getSize() {
+    public PAcsessorySize getSize() {
         return size;
     }
 
-    public void setSize(AcsessorySize size) {
+    public void setSize(PAcsessorySize size) {
         this.size = size;
     }
 
-    public AcsessoryState getState() {
-        return State;
+    public PAcsessoryState getState() {
+        return state;
     }
 
-    public void setState(AcsessoryState state) {
-        State = state;
+    public void setState(PAcsessoryState state) {
+        this.state = state;
+    }
+
+    public String customToString() {
+        return (super.toString() + "\n" + toString());
+    }
+
+    @Override
+    public String toString() {
+        return "PhotometerAcsessory{" +
+                "cost=" + cost +
+                ", size=" + size +
+                ", state=" + state +
+                ", ownerPhotometer=" + ownerPhotometer +
+                '}';
     }
 }
 

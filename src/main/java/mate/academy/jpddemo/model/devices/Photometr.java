@@ -1,9 +1,6 @@
 package mate.academy.jpddemo.model.devices;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import mate.academy.jpddemo.model.acsessory.Acsessory;
 import mate.academy.jpddemo.model.acsessory.PhotometerAcsessory;
 import mate.academy.jpddemo.model.model.Patient;
 import mate.academy.jpddemo.model.test.SkinTest;
@@ -15,16 +12,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mate.academy.jpddemo.model.acsessory.PhotometerAcsessory.AcsessoryState.APPLIED;
-import static mate.academy.jpddemo.model.acsessory.PhotometerAcsessory.AcsessoryState.UNAPPLIED;
+import static mate.academy.jpddemo.model.acsessory.PhotometerAcsessory.PAcsessoryState.APPLIED;
+import static mate.academy.jpddemo.model.acsessory.PhotometerAcsessory.PAcsessoryState.UNAPPLIED;
 
 @Entity
 @Table(name = "photomeeters")
@@ -39,21 +34,21 @@ public class Photometr extends Device {
     private String qrCode;
     @Column
     private Double cost;
-
     @Column
-            @OneToMany(mappedBy = "ownerPhotometer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ownerPhotometer", fetch = FetchType.EAGER)
     protected List<PhotometerAcsessory> photometerAcsessories = new ArrayList<>(1);
 
     @Override
-    public void doTest(Patient patient) {
+    public Test doTest(Patient patient) {
         super.doTest(patient);
         System.out.print("by PHOTOMETER for " + patient.getName());
         SkinTest skinTest = createSkinTest();
-        System.out.println("\n" + skinTest.myToStringTest() + skinTest.myToStringSkin());
+        System.out.println("\n" + skinTest.customToString());
+        return skinTest;
     }
 
     private SkinTest createSkinTest() {
-        return new  SkinTest("superpowerTest",
+        return new  SkinTest("SkinTest",
                 Test.Type.FOR_ADULT,
                 "Kyiv",
                 1200.0,
@@ -62,7 +57,8 @@ public class Photometr extends Device {
     }
 
     @Override
-    public Device turnOnAcsessory(PhotometerAcsessory photometerAcsessory) {
+    public Device turnOnAcsessory(Object acsessory) {
+        PhotometerAcsessory photometerAcsessory = (PhotometerAcsessory) acsessory;
         photometerAcsessories.add(photometerAcsessory);
         photometerAcsessory.setState(APPLIED);
         System.out.println("Photometer acsessory turned ON");
@@ -70,7 +66,8 @@ public class Photometr extends Device {
     }
 
     @Override
-    public Device turnOffAcsessory(PhotometerAcsessory photometerAcsessory) {
+    public Device turnOffAcsessory(Object acsessory) {
+        PhotometerAcsessory photometerAcsessory = (PhotometerAcsessory) acsessory;
         photometerAcsessories.remove(photometerAcsessory);
         photometerAcsessory.setState(UNAPPLIED);
         System.out.println("Photometer acsessory turned OFF");
@@ -119,5 +116,19 @@ public class Photometr extends Device {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+
+
+    public String customToString() {
+        return (super.toString() + "\n" + toString());
+    }
+
+    @Override
+    public String toString() {
+        return "Photometr{" +
+                "weight=" + weight +
+                ", qrCode='" + qrCode + '\'' +
+                ", cost=" + cost +
+                '}';
     }
 }

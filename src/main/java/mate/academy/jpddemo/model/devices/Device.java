@@ -31,18 +31,19 @@ public class Device {
     private String brand;
     boolean avaliableAcsessory = false;
 
-    protected Device turnOnAcsessory(PhotometerAcsessory photometerAcsessory) {
+    protected Device turnOnAcsessory(Object acsessory) {
         this.avaliableAcsessory = true;
         return this;
     }
 
-    protected Device turnOffAcsessory(PhotometerAcsessory photometerAcsessory) {
+    protected Device turnOffAcsessory(Object acsessory) {
         this.avaliableAcsessory = false;
         return this;
     }
 
-    public void doTest(Patient patient) {
+    public Test doTest(Patient patient) {
         System.out.print("do test ");
+        return new Test();
     }
 
     public Device() {
@@ -89,10 +90,10 @@ public class Device {
     @Override
     public String toString() {
         return "Device{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", model='" + model + '\'' +
                 ", brand='" + brand + '\'' +
+                ", avaliableAcsessory=" + avaliableAcsessory +
                 '}';
     }
 }

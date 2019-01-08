@@ -43,10 +43,12 @@ public class Test {
         this.location = location;
     }
 
-    public String myToStringTest() {
-        return "Test [" +
-                "name = " + name +
-                ", type = " + type +
-                ", location = " + location;
+    @Override
+    public String toString() {
+        return "Test{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                ", location='" + location + '\'' +
+                '}';
     }
 }

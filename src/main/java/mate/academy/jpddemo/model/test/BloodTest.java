@@ -73,4 +73,17 @@ public class BloodTest extends Test {
     public void setState(BloodTest.State state) {
         State = state;
     }
+
+    public String customToString() {
+        return (super.toString() + "\n" + toString());
+    }
+
+    @Override
+    public String toString() {
+        return "BloodTest{" +
+                "cost=" + cost +
+                ", date=" + date +
+                ", State=" + State +
+                '}';
+    }
 }

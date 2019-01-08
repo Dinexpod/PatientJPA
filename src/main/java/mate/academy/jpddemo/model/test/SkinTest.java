@@ -42,10 +42,16 @@ public class SkinTest extends Test {
         State = state;
     }
 
-    public String myToStringSkin() {
-        return  (", cost = " + cost +
-                ", date = " + date +
-                ", State = " + State +
-                "]");
+    public String customToString() {
+        return (super.toString() + "\n" + toString());
+    }
+
+    @Override
+    public String toString() {
+        return "SkinTest{" +
+                "cost=" + cost +
+                ", date=" + date +
+                ", State=" + State +
+                '}';
     }
 }
