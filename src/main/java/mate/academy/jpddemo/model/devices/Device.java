@@ -1,11 +1,13 @@
 package mate.academy.jpddemo.model.devices;
 
+import mate.academy.jpddemo.model.Main;
 import mate.academy.jpddemo.model.acsessory.PhotometerAcsessory;
 import mate.academy.jpddemo.model.model.Patient;
 import mate.academy.jpddemo.model.test.Test;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,8 @@ import java.util.List;
 @Table(name = "devices")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Device {
+    private static EntityManager em = Main.getEm();
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "device_id")
@@ -49,10 +53,15 @@ public class Device {
     public Device() {
     }
 
-    public Device(String name, String model, String brand) {
+    public Device(String name, String model, String brand, EntityManager em) {
         this.name = name;
         this.model = model;
         this.brand = brand;
+
+        em.getTransaction().begin();
+        em.persist(this);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public Integer getId() {

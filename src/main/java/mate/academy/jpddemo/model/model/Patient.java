@@ -1,7 +1,10 @@
 package mate.academy.jpddemo.model.model;
 
+import mate.academy.jpddemo.model.Main;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +17,8 @@ import java.util.Date;
 @Table(name = "patient")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Patient {
+    private static EntityManager em = Main.getEm();
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "patient_id")
@@ -25,13 +30,18 @@ public class Patient {
     @Column(name = "date")
     Date date;
 
-    public Patient(String name, String lastName, Date date) {
-        this.name = name;
-        this.lastName = lastName;
-        this.date = date;
+    public Patient() {
     }
 
-    public Patient() {
+    public Patient(String name, String lastName, EntityManager em) {
+        this.name = name;
+        this.lastName = lastName;
+        date = new Date();
+
+        em.getTransaction().begin();
+        em.persist(this);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public int getId() {

@@ -1,5 +1,6 @@
 package mate.academy.jpddemo.model.devices;
 
+import mate.academy.jpddemo.model.Main;
 import mate.academy.jpddemo.model.acsessory.PhotometerAcsessory;
 import mate.academy.jpddemo.model.acsessory.UltrasonicAcsessory;
 import mate.academy.jpddemo.model.model.Patient;
@@ -9,6 +10,7 @@ import mate.academy.jpddemo.model.test.Test;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +27,8 @@ import static mate.academy.jpddemo.model.acsessory.UltrasonicAcsessory.UAcsessor
 @Entity
 @Table(name = "Ultrasonic_devices")
 public class UltrasonicDevice extends Device {
+    private static EntityManager em = Main.getEm();
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "ultrasonic_device_id")
@@ -44,12 +48,12 @@ public class UltrasonicDevice extends Device {
     public Test doTest(Patient patient) {
         super.doTest(patient);
         System.out.print("by ULTRASONIC DEVICE!");
-        BloodTest bloodTest = createBloodTest();
+        BloodTest bloodTest = createBloodTest(em);
         System.out.println("\n" + bloodTest.customToString());
         return bloodTest;
     }
 
-    private BloodTest createBloodTest() {
+    private BloodTest createBloodTest(EntityManager em) {
         return new  BloodTest("UltrasonicTest",
                 Test.Type.FOR_ADULT,
                 "DNIPRO",
@@ -77,13 +81,19 @@ public class UltrasonicDevice extends Device {
     }
 
     public UltrasonicDevice() {
+
     }
 
-    public UltrasonicDevice(String name, String model, String brand, Integer weight, String qrCode, Double cost) {
-        super(name, model, brand);
+    public UltrasonicDevice(String name, String model, String brand, Integer weight, String qrCode, Double cost, EntityManager em) {
+        super(name, model, brand, em);
         this.weight = weight;
         this.qrCode = qrCode;
         this.cost = cost;
+
+        em.getTransaction().begin();
+        em.persist(this);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     @Override
