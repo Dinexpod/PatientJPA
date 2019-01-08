@@ -13,8 +13,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import java.util.Date;
 
-@Entity
-@Table(name = "patient")
+@Entity(name = "patient")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Patient {
     private static EntityManager em = Main.getEm();

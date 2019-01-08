@@ -13,8 +13,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "tests")
+@Entity(name = "tests")
+//@Table(name = "tests")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Test {
     @Id

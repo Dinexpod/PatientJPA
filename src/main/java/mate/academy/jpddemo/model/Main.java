@@ -11,6 +11,7 @@ import mate.academy.jpddemo.model.test.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,10 +25,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        EntityManagerFactory emf = Persistence
-//                .createEntityManagerFactory("PatientPU");
-//        em = emf.createEntityManager();
-//
+        EntityManagerFactory emf = Persistence
+                .createEntityManagerFactory("PatientPU");
+        em = emf.createEntityManager();
+
 //        Patient patient = new Patient ("Tony", "Lev", em);
 //        Photometr photometr = new Photometr(
 //                "Photometer",
@@ -71,8 +72,7 @@ public class Main {
 //        saveTest(ultrasonicTest);
 
         PatientService patientService = new PatientService();
-        List<String> tests = new ArrayList<>();
-        tests = patientService.getAllTests();
+        List<Test> tests = patientService.getAllTests();
         System.out.println(tests.toString());
     }
     private static void saveTest(Test test) {
@@ -80,5 +80,13 @@ public class Main {
         em.persist(test);
         em.flush();
         em.getTransaction().commit();
+    }
+
+    public static List<Test> getPatientByName() {
+        TypedQuery<Test> query =
+                em
+                        .createQuery("select p from tests p ", Test.class);
+
+        return query.getResultList();
     }
 }

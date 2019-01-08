@@ -2,6 +2,9 @@ package mate.academy.jpddemo.model.model;
 
 import mate.academy.jpddemo.model.ConnectionUtil;
 import mate.academy.jpddemo.model.test.Test;
+import mate.academy.jpddemo.model.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -13,6 +16,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class PatientService {
     private static  Connection connection = ConnectionUtil.getConnection();
@@ -38,38 +42,27 @@ public class PatientService {
 //        return tests;
 //    }
 
-    public List<String> getAllTests() {
+    public List<Test> getAllTests() {
         List<String> tests = new ArrayList<>();
         final String SELECT = "SELECT * FROM tests";
-
-            String get = null;
-            try{
-
-                PreparedStatement stmt = connection.prepareStatement(SELECT);
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next())
-                {
-                    tests.add(rs.getString("name"));
-                }
-
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-            return tests;
-        }
+        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Query<Test> query = session.createNamedQuery(SELECT, Test.class);
 
 
-
-    private Test getTest(ResultSet rs) throws SQLException {
-        Test test = new Test();
-        test.setId(rs.getInt("test_id"));
-        test.setLocation(rs.getString("location"));
-        test.setName(rs.getString("name"));
-//        Test.Type.valueOf(rs.getString("type"));
-
-        return test;
+        return session.createCriteria(Test.class).list();
     }
+
+    public List<Patient> getAllPatient() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Query<Test> query = session.createNamedQuery(SELECT, Test.class);
+
+
+        return session.createQuery("select t from  patient t", Patient.class).getResultList();
+    }
+
+
+
 
     List<Test> getAllTestsInDateRange(LocalDateTime from, LocalDateTime to) {
         List<Test> tests = new ArrayList<>();

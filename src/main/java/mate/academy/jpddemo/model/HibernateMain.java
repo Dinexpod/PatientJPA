@@ -26,12 +26,14 @@ public class HibernateMain {
     public static Device getDevice(Integer id) {
         System.out.println("First level cache example");
         Session session = HibernateUtil.getSessionFactory().openSession();
+
         Device device = session.load(Device.class, id);
         System.out.println(device.getModel());
 
         Device deviceOneMore = session.load(Device.class, id);
         System.out.println(device.getModel());
         session.close();
+
         return deviceOneMore;
     }
 
