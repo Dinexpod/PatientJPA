@@ -1,19 +1,22 @@
-package mate.academy.jpddemo.model.model;
+package mate.academy.jpademo.model;
+
+import mate.academy.jpademo.Main;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Entity
-@Table(name = "patient")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity(name = "patient")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Patient {
+    private static EntityManager em = Main.getEm();
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "patient_id")
@@ -25,13 +28,18 @@ public class Patient {
     @Column(name = "date")
     Date date;
 
-    public Patient(String name, String lastName, Date date) {
-        this.name = name;
-        this.lastName = lastName;
-        this.date = date;
+    public Patient() {
     }
 
-    public Patient() {
+    public Patient(String name, String lastName, EntityManager em) {
+        this.name = name;
+        this.lastName = lastName;
+        date = new Date();
+
+        em.getTransaction().begin();
+        em.persist(this);
+        em.flush();
+        em.getTransaction().commit();
     }
 
     public int getId() {

@@ -1,7 +1,7 @@
-package mate.academy.jpddemo.model;
+package mate.academy.jpademo;
 
-import mate.academy.jpddemo.model.devices.Device;
-import mate.academy.jpddemo.model.util.HibernateUtil;
+import mate.academy.jpademo.devices.Device;
+import mate.academy.jpademo.util.HibernateUtil;
 import org.hibernate.Session;
 
 public class HibernateMain {
@@ -26,12 +26,14 @@ public class HibernateMain {
     public static Device getDevice(Integer id) {
         System.out.println("First level cache example");
         Session session = HibernateUtil.getSessionFactory().openSession();
+
         Device device = session.load(Device.class, id);
         System.out.println(device.getModel());
 
         Device deviceOneMore = session.load(Device.class, id);
         System.out.println(device.getModel());
         session.close();
+
         return deviceOneMore;
     }
 

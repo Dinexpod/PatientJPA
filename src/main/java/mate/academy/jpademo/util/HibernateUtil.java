@@ -1,6 +1,6 @@
-package mate.academy.jpddemo.model.util;
+package mate.academy.jpademo.util;
 
-import mate.academy.jpddemo.model.devices.Device;
+import mate.academy.jpademo.devices.Device;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
